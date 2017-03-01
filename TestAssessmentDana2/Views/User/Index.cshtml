@@ -24,7 +24,7 @@
                 <td>
                     @if (item.Role.Name.Equals("Standard_User"))
                     {
-                        @using (Html.BeginForm("Promote", "User", FormMethod.Post))
+                        using (Html.BeginForm("Promote", "User", FormMethod.Post))
                         {
                             <input type="hidden" name="userID" value="@user.Id" />
                             <input type="hidden" name="roleName" value="@item.Role.Name" />
@@ -33,16 +33,16 @@
                     }
                     @if (item.Role.Name.Equals("Promoted_User"))
                     {
-                        @using (Html.BeginForm("Demote", "User", FormMethod.Post))
+                        using (Html.BeginForm("Demote", "User", FormMethod.Post))
                         {
                             <input type="hidden" name="userID" value="@user.Id" />
                             <input type="hidden" name="roleName" value="@item.Role.Name" />
                             <input type="submit" value="Demote User">
                         }
                     }
-                    @if (!user.IsBanned)
+                    @if (!user.IsBanned && !User.IsInRole("Administrator"))
                     {
-                        @using (Html.BeginForm("Suspend", "User", FormMethod.Post))
+                        using (Html.BeginForm("Suspend", "User", FormMethod.Post))
                         {
                             <input type="hidden" name="userID" value="@user.Id" />
                             <input type="submit" value="Suspend User">
@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        @using (Html.BeginForm("Reinstate", "User", FormMethod.Post))
+                        using (Html.BeginForm("Reinstate", "User", FormMethod.Post))
                         {
                             <input type="hidden" name="userID" value="@user.Id" />
                             <input type="submit" value="Reinstate User">

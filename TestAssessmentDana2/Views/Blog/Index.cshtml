@@ -22,6 +22,11 @@
             </div>
             <p class="mb-1">@Html.DisplayFor(modelItem => item.Content)</p>
             <small>Posted by @Html.DisplayFor(modelItem => Model.Users.First(i => i.Id == item.UserID).FirstName)</small>
+            @if ((!currentUser.IsBanned && item.UserID.Equals(currentUser.Id)) || User.IsInRole("Administrator"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.PostID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.PostID })
+            }
         </a>
         <p>
             <button class="btn btn-info col-lg-offset-9" type="button" data-toggle="collapse" data-target="#CreateComment" aria-expanded="false" aria-controls="collapseExample">

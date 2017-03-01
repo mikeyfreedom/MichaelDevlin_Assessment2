@@ -18,7 +18,8 @@ namespace TestAssessmentDana2.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime PostDate { get; set; }
         [DisplayFormat(DataFormatString = "{0:%h}:{0:%m}:{0:%s}")]
-        public TimeSpan PostTime { get; set; } 
+        public TimeSpan PostTime { get; set; }
+        [DataType(DataType.MultilineText)] 
         public string Content { get; set; }
 
         public Post()
