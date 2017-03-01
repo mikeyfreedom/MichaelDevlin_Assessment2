@@ -11,6 +11,7 @@ namespace TestAssessmentDana2.Models
     public class UserController : Controller
     {
         ApplicationDbContext db = new ApplicationDbContext();
+        
         // GET: User
         public ActionResult Index()
         {
@@ -41,7 +42,19 @@ namespace TestAssessmentDana2.Models
         [HttpPost]
         public ActionResult Promote()
         {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
+            string uID = Request.Form["userID"];
+            string roleName = Request.Form["roleName"];
+            userManager.RemoveFromRole(uID, roleName);
+            userManager.AddToRole(uID, RoleNames.ROLE_PROMOTEDUSER);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Demote()
+        {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
             string uID = Request.Form["userID"];
@@ -53,15 +66,23 @@ namespace TestAssessmentDana2.Models
         }
 
         [HttpPost]
-        public ActionResult Demote()
+        public ActionResult Suspend()
         {
-            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
             string uID = Request.Form["userID"];
-            string roleName = Request.Form["roleName"];
-            userManager.RemoveFromRole(uID, roleName);
-            userManager.AddToRole(uID, RoleNames.ROLE_STANDARDUSER);
+            userManager.FindById(uID).IsBanned = true;
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Reinstate()
+        {
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+
+            string uID = Request.Form["userID"];
+            userManager.FindById(uID).IsBanned = false;
 
             return RedirectToAction("Index");
         }

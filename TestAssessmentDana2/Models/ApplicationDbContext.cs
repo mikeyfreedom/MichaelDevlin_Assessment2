@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,8 @@ namespace TestAssessmentDana2.Models
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-
+        
+        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
@@ -71,7 +73,8 @@ namespace TestAssessmentDana2.Models
                         PhoneNumber = "0141454637",
                         UserName = userName,
                         Email = userName,
-                        EmailConfirmed = true
+                        EmailConfirmed = true                      
+                        
                     };
                     userManager.Create(newUser, password);
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);

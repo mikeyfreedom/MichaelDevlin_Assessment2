@@ -3,10 +3,11 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = Model.Users.First(i => i.UserName == User.Identity.Name);
 }
 
 <h2>Index</h2>
-@if (Request.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Promoted_User")))
+@if (Request.IsAuthenticated && !currentUser.IsBanned && (User.IsInRole("Administrator") || User.IsInRole("Promoted_User")))
 {
     <p>@Html.ActionLink("Create New", "Create")</p>
 }
@@ -31,17 +32,26 @@
             </button>
         </p>
         <div class="collapse" id="CreateComment">
-            <div id="commentForm">
-                @using (Html.BeginForm("CreateComment", "Blog", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.TextBox("Content");
+            @if (currentUser.IsBanned)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong>Error</strong> You have been banned from posting. Please contact an administrator.
+                </div>
+            }
+            else
+            {
+                <div id="commentForm">
+                    @using (Html.BeginForm("CreateComment", "Blog", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.TextBox("Content");
 
-                    <input type="hidden" name="userAuthor" value="@Model.Users.First(i => i.UserName == User.Identity.Name).FirstName" />
-                    <input type="hidden" name="postID" value="@item.PostID" />
-                    <input type="submit" value="Add Comment">
-                }
-            </div>
+                        <input type="hidden" name="userAuthor" value="@Model.Users.First(i => i.UserName == User.Identity.Name).FirstName" />
+                        <input type="hidden" name="postID" value="@item.PostID" />
+                        <input type="submit" value="Add Comment">
+                    }
+                </div>
+            }
         </div>
         <div class="collapse" id="ViewComments">
             @foreach (var comment in item.Comments)

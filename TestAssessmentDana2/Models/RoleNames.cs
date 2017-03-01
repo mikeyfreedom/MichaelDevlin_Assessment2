@@ -10,6 +10,6 @@ namespace TestAssessmentDana2.Models
     {
         public const string ROLE_ADMINISTRATOR = "Administrator";
         public const string ROLE_STANDARDUSER = "Standard_User";
-        public const string ROLE_STANDARDUSER = "Promoted_User";
+        public const string ROLE_PROMOTEDUSER = "Promoted_User";
     }
 }
