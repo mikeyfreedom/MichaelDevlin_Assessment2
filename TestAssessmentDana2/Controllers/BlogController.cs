@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -60,8 +62,8 @@ namespace TestAssessmentDana2.Controllers
                 int pID = Int32.Parse(postID);
                 comment.Content = formValue;
                 comment.PostID = pID;
-                comment.Author = User.Identity.Name;
-
+                comment.Author = Request.Form["userAuthor"];
+                
                 if (ModelState.IsValid)
                 {
                     db.Comments.Add(comment);

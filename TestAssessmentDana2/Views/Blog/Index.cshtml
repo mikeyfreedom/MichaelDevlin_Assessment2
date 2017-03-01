@@ -16,14 +16,14 @@
     <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@Html.DisplayFor(modelItem => item.PostTitle)</h5>
+                <h1 class="mb-1">@Html.DisplayFor(modelItem => item.PostTitle)</h1>
                 <small>@Html.DisplayFor(modelItem => item.PostDate)</small>
             </div>
             <p class="mb-1">@Html.DisplayFor(modelItem => item.Content)</p>
             <small>Posted by @Html.DisplayFor(modelItem => Model.Users.First(i => i.Id == item.UserID).FirstName)</small>
         </a>
         <p>
-            <button class="btn btn-info col-lg-offset-10" type="button" data-toggle="collapse" data-target="#CreateComment" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-info col-lg-offset-9" type="button" data-toggle="collapse" data-target="#CreateComment" aria-expanded="false" aria-controls="collapseExample">
                 Add a comment
             </button>
             <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#ViewComments" aria-expanded="false" aria-controls="collapseExample">
@@ -37,6 +37,7 @@
                     @Html.AntiForgeryToken()
                     @Html.TextBox("Content");
 
+                    <input type="hidden" name="userAuthor" value="@Model.Users.First(i => i.UserName == User.Identity.Name).FirstName" />
                     <input type="hidden" name="postID" value="@item.PostID" />
                     <input type="submit" value="Add Comment">
                 }

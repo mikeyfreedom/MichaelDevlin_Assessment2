@@ -31,7 +31,19 @@
                         }
                     </td>
                 }
-                else{<td></td>}
+                @if (item.Role.Name.Equals("Promoted_User"))
+                {
+                    <td>
+                        @using (Html.BeginForm("Demote", "User", FormMethod.Post))
+                        {
+                            <input type="hidden" name="userID" value="@user.Id" />
+                            <input type="hidden" name="roleName" value="@item.Role.Name" />
+                            <input type="submit" value="Demote User">
+                        }
+                    </td>
+                }
+else
+{<td></td>}
             </tr>
         }
     }

@@ -49,9 +49,9 @@ namespace TestAssessmentDana2.Models
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STANDARDUSER));
                 }
 
-                if (!roleManager.RoleExists(RoleNames.ROLE_PROMOTEDUSER))
+                if (!roleManager.RoleExists(RoleNames.ROLE_STANDARDUSER))
                 {
-                    var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_PROMOTEDUSER));
+                    var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STANDARDUSER));
                 }
 
                 string userName = "admin@admin.com";
@@ -77,7 +77,6 @@ namespace TestAssessmentDana2.Models
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);
                 }
             }
-            
 
             base.Seed(context);
             context.SaveChanges();
