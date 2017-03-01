@@ -50,6 +50,7 @@ namespace TestAssessmentDana2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CommentID,CommentDate,CommentTime,Content,PostID")] Comment comment)
         {
+            comment.Author = User.Identity.Name;
             if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);

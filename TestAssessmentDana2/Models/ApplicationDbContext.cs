@@ -76,8 +76,8 @@ namespace TestAssessmentDana2.Models
                     userManager.Create(newUser, password);
                     userManager.AddToRole(newUser.Id, RoleNames.ROLE_ADMINISTRATOR);
                 }
-
             }
+            
 
             base.Seed(context);
             context.SaveChanges();

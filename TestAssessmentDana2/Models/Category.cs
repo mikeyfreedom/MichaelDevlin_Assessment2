@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace TestAssessmentDana2.Models
     {
         [Key]
         public int CategoryID { get; set; }
+        [DisplayName("Category Name")]
         public string CategoryName { get; set; }
         public Category()
         {

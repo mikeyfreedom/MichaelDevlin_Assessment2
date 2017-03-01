@@ -60,7 +60,8 @@ namespace TestAssessmentDana2.Controllers
                 int pID = Int32.Parse(postID);
                 comment.Content = formValue;
                 comment.PostID = pID;
-                
+                comment.Author = User.Identity.Name;
+
                 if (ModelState.IsValid)
                 {
                     db.Comments.Add(comment);
