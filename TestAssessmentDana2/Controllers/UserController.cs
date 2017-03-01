@@ -43,6 +43,7 @@ namespace TestAssessmentDana2.Models
         public ActionResult Promote()
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
 
             string uID = Request.Form["userID"];
             string roleName = Request.Form["roleName"];
@@ -56,6 +57,7 @@ namespace TestAssessmentDana2.Models
         public ActionResult Demote()
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(db));
 
             string uID = Request.Form["userID"];
             string roleName = Request.Form["roleName"];

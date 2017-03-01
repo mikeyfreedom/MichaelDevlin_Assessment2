@@ -40,7 +40,7 @@
                             <input type="submit" value="Demote User">
                         }
                     }
-                    @if (!user.IsBanned && !User.IsInRole("Administrator"))
+                    @if (!user.IsBanned || !User.IsInRole("Administrator"))
                     {
                         using (Html.BeginForm("Suspend", "User", FormMethod.Post))
                         {
@@ -48,7 +48,7 @@
                             <input type="submit" value="Suspend User">
                         }
                     }
-                    else
+                    else if (user.IsBanned)
                     {
                         using (Html.BeginForm("Reinstate", "User", FormMethod.Post))
                         {

@@ -51,9 +51,9 @@ namespace TestAssessmentDana2.Models
                     var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STANDARDUSER));
                 }
 
-                if (!roleManager.RoleExists(RoleNames.ROLE_STANDARDUSER))
+                if (!roleManager.RoleExists(RoleNames.ROLE_PROMOTEDUSER))
                 {
-                    var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_STANDARDUSER));
+                    var roleResult = roleManager.Create(new IdentityRole(RoleNames.ROLE_PROMOTEDUSER));
                 }
 
                 string userName = "admin@admin.com";
