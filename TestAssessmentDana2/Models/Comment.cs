@@ -21,6 +21,7 @@ namespace TestAssessmentDana2.Models
         [DisplayFormat(DataFormatString = "{0:%h}:{0:%m}:{0:%s}")]
         public TimeSpan CommentTime { get; set; }
         public string Content { get; set; }
+        public string Author { get; set; }
 
         public int PostID { get; set; }
         public Post Post { get; set; }

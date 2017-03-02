@@ -3,58 +3,81 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var currentUser = Model.Users.First(i => i.UserName == User.Identity.Name);
+    int number = 1;
 }
 
 <h2>Index</h2>
-@if (Request.IsAuthenticated && (User.IsInRole("Administrator") || User.IsInRole("Promoted_User")))
+@if (Request.IsAuthenticated && !currentUser.IsBanned && (User.IsInRole("Administrator") || User.IsInRole("Promoted_User")))
 {
     <p>@Html.ActionLink("Create New", "Create")</p>
 }
 
 @foreach (var item in Model.Posts)
 {
+    string addTarget = "#CreateComment" + number;
+    string viewTarget = "#ViewComments" + number;
+    string addID = "CreateComment" + number;
+    string viewID = "ViewComments" + number;
+    
     <div class="list-group">
         <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@Html.DisplayFor(modelItem => item.PostTitle)</h5>
-                <small>@Html.DisplayFor(modelItem => item.PostDate)</small>
+                <h1 class="mb-1"><u>@Html.DisplayFor(modelItem => item.PostTitle)</u></h1>
             </div>
-            <p class="mb-1">@Html.DisplayFor(modelItem => item.Content)</p>
-            <small>Posted by @Html.DisplayFor(modelItem => Model.Users.First(i => i.Id == item.UserID).FirstName)</small>
+            <p class="mb-1"><h2>@Html.DisplayFor(modelItem => item.Content)</h2></p>
+            <small><i>Posted by @Html.DisplayFor(modelItem => Model.Users.First(i => i.Id == item.UserID).FirstName) on @Html.DisplayFor(modelItem => item.PostDate)</i></small>
         </a>
         <p>
-            <button class="btn btn-info col-lg-offset-10" type="button" data-toggle="collapse" data-target="#CreateComment" aria-expanded="false" aria-controls="collapseExample">
+            @if ((currentUser.IsBanned == false && item.UserID.Equals(currentUser.Id)) || User.IsInRole("Administrator"))
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.PostID }) <a>|</a> 
+                @Html.ActionLink("Delete", "Delete", new { id = item.PostID })
+            }
+            <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target=@addTarget aria-expanded="false" aria-controls="collapseExample">
                 Add a comment
             </button>
-            <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#ViewComments" aria-expanded="false" aria-controls="collapseExample">
+            <button class="btn btn-info pull-right" type="button" data-toggle="collapse" data-target=@viewTarget aria-expanded="false" aria-controls="collapseExample">
                 View comments
             </button>
         </p>
-        <div class="collapse" id="CreateComment">
-            <div id="commentForm">
-                @using (Html.BeginForm("CreateComment", "Blog", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.TextBox("Content");
+        <br />
+        <div class="collapse" id=@addID>
+            @if (currentUser.IsBanned == true)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <strong>Error</strong> You have been banned from posting. Please contact an administrator.
+                </div>
+            }
+            else
+            {
+                <div id="commentForm">
+                    @using (Html.BeginForm("CreateComment", "Blog", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.TextBox("Content");
 
-                    <input type="hidden" name="postID" value="@item.PostID" />
-                    <input type="submit" value="Add Comment">
-                }
-            </div>
+                        <input type="hidden" name="userAuthor" value="@Model.Users.First(i => i.UserName == User.Identity.Name).FirstName" />
+                        <input type="hidden" name="postID" value="@item.PostID" />
+                        <input type="submit" value="Add Comment">
+                    }
+                </div>
+            }
         </div>
-        <div class="collapse" id="ViewComments">
+        <div class="collapse" id=@viewID>
             @foreach (var comment in item.Comments)
             {
                 <a href="#" class="list-group-item list-group-item-action flex-column align-items-start col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">@Html.DisplayFor(modelItem => comment.CommentDate)</h5>
-                        <small class="text-muted">3 days ago</small>
+                        <small class="text-muted">Posted by: @Html.DisplayFor(modelItem => comment.Author)</small>
                     </div>
                     <p class="mb-1">@Html.DisplayFor(modelItem => comment.Content)</p>
                     <small class="text-muted">@Html.DisplayFor(modelItem => comment.CommentTime)</small>
                 </a>
             }
         </div>
-        
     </div>
+    number++;
+    <br />
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -50,6 +52,11 @@ namespace TestAssessmentDana2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CommentID,CommentDate,CommentTime,Content,PostID")] Comment comment)
         {
+            var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
+            string author = User.Identity.Name;
+            var user = userManager.FindByName(author);
+            comment.Author = user.FirstName;
+
             if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);
