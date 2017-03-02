@@ -62,6 +62,7 @@ namespace TestAssessmentDana2.Controllers
                 string formValue = Request.Form["Content"];
                 string postID = Request.Form["postID"];
                 int pID = Int32.Parse(postID);
+
                 comment.Content = formValue;
                 comment.PostID = pID;
                 comment.Author = Request.Form["userAuthor"];

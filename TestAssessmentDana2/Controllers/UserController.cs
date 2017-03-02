@@ -73,7 +73,9 @@ namespace TestAssessmentDana2.Models
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
             string uID = Request.Form["userID"];
-            userManager.FindById(uID).IsBanned = true;
+            var user = userManager.FindById(uID);
+            user.IsBanned = true;
+            db.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -84,7 +86,9 @@ namespace TestAssessmentDana2.Models
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
             string uID = Request.Form["userID"];
-            userManager.FindById(uID).IsBanned = false;
+            var user = userManager.FindById(uID);
+            user.IsBanned = false;
+            db.SaveChanges();
 
             return RedirectToAction("Index");
         }

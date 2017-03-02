@@ -8,10 +8,14 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
+<table class="table-responsive">
     <tr>
         <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email Address</th>
         <th>Role</th>
+        <th>Suspended?</th>
+        <th></th>
         <th></th>
     </tr>
     @foreach (var item in Model.UserRoleModels)
@@ -20,43 +24,61 @@
         {
             <tr>
                 <td>@Html.DisplayFor(modelItem => user.FirstName)</td>
+                <td>@Html.DisplayFor(modelItem => user.LastName)</td>
+                <td>@Html.DisplayFor(modelItem => user.Email)</td>
                 <td>@Html.DisplayFor(modelItem => item.Role.Name)</td>
-                <td>
+                <td>@if (user.IsBanned == true)
+                    {
+                        <text>Y</text>
+                    }
+                    else
+                    {
+                        <text>N</text>
+                    }
+                </td>
+                
                     @if (item.Role.Name.Equals("Standard_User"))
                     {
-                        using (Html.BeginForm("Promote", "User", FormMethod.Post))
-                        {
+                        <td>
+                            @using (Html.BeginForm("Promote", "User", FormMethod.Post))
+                            {
                             <input type="hidden" name="userID" value="@user.Id" />
                             <input type="hidden" name="roleName" value="@item.Role.Name" />
-                            <input type="submit" value="Promote User">
-                        }
+                            <input class="btn-success" type="submit" value="Promote User">
+                            }
+                        </td>
                     }
                     @if (item.Role.Name.Equals("Promoted_User"))
                     {
-                        using (Html.BeginForm("Demote", "User", FormMethod.Post))
-                        {
+                        <td>
+                            @using (Html.BeginForm("Demote", "User", FormMethod.Post))
+                            {
                             <input type="hidden" name="userID" value="@user.Id" />
                             <input type="hidden" name="roleName" value="@item.Role.Name" />
-                            <input type="submit" value="Demote User">
-                        }
+                            <input class="btn-warning" type="submit" value="Demote User">
+                            }
+                        </td>
                     }
-                    @if (!user.IsBanned || !User.IsInRole("Administrator"))
+                    @if (user.IsBanned == false)
                     {
-                        using (Html.BeginForm("Suspend", "User", FormMethod.Post))
-                        {
-                            <input type="hidden" name="userID" value="@user.Id" />
-                            <input type="submit" value="Suspend User">
-                        }
+                        <td>
+                            @using (Html.BeginForm("Suspend", "User", FormMethod.Post))
+                            {
+                                <input type="hidden" name="userID" value="@user.Id" />
+                                <input class="btn-danger" type="submit" value="Suspend User">
+                            }
+                        </td>
                     }
-                    else if (user.IsBanned)
+                    else
                     {
-                        using (Html.BeginForm("Reinstate", "User", FormMethod.Post))
-                        {
+                        <td>
+                            @using (Html.BeginForm("Reinstate", "User", FormMethod.Post))
+                            {
                             <input type="hidden" name="userID" value="@user.Id" />
-                            <input type="submit" value="Reinstate User">
-                        }
+                            <input class="btn-success" type="submit" value="Reinstate User">
+                            }
+                        </td>
                     }
-                </td>
             </tr>
         }
     }
